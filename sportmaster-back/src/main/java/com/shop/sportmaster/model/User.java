@@ -20,9 +20,11 @@ public class User {
     @ManyToOne
     private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
+    public User() {
+    }
 
     public Long getId() {
         return id;

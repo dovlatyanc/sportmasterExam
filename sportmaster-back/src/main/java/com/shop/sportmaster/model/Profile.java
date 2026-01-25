@@ -14,9 +14,22 @@ public class Profile {
     private String city;
     private String country;
     private String phone;
-
-    @Column(nullable = false, unique = true)
     private String email;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Profile() {
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
 
     public Long getId() {
         return id;
