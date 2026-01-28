@@ -23,21 +23,15 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**",
-                                "/register.html",
-                                "/login.html",
-                                "/css/**",
-                                "/js/**"
-                        ).permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/auth/**", "/register.html").permitAll()
+                        .requestMatchers("/test/admin").hasRole("ADMIN")
+                        .requestMatchers("/test/user").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

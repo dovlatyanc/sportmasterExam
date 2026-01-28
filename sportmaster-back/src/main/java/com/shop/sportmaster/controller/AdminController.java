@@ -1,5 +1,3 @@
-
-
 package com.shop.sportmaster.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,19 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/test")
-public class testController {
+@RequestMapping("/admin")
+public class AdminController {
 
-    @GetMapping("/user")
-    public String user() {
-        return "USER OK";
-    }
-
-    @GetMapping("/admin")
+    @GetMapping("/panel")
     public String admin() {
-        return "ADMIN OK";
+        return "ADMIN PANEL";
     }
 }
-
-
-
