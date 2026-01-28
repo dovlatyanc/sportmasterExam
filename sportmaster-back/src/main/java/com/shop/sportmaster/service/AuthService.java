@@ -1,11 +1,13 @@
 package com.shop.sportmaster.service;
 
+import com.shop.sportmaster.dto.LoginRequest;
 import com.shop.sportmaster.dto.RegisterRequest;
 import com.shop.sportmaster.model.Profile;
 import com.shop.sportmaster.model.Role;
 import com.shop.sportmaster.model.User;
 import com.shop.sportmaster.repository.RoleRepository;
 import com.shop.sportmaster.repository.UserRepository;
+import com.shop.sportmaster.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public void register(RegisterRequest request) {
-
-        if (userRepository.findByEmail(request.email).isPresent()) {
-            throw new RuntimeException("User already exists");
-        }
-
         Role role = roleRepository.findByName("USER")
-                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+                .orElseGet(() -> roleRepository.save(new Role("USER")));
 
         User user = new User();
         user.setEmail(request.email);

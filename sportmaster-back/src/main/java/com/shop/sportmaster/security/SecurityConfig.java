@@ -16,26 +16,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final JwtService jwtService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
+                .sessionManagement(s -> s.sessionCreationPolicy(
+                        org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/register.html").permitAll()
-                        .requestMatchers("/test/admin").hasRole("ADMIN")
-                        .requestMatchers("/test/user").hasRole("USER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .userDetailsService(userDetailsService)
-                .httpBasic(Customizer.withDefaults());
+                .addFilterBefore(
+                        new JwtFilter(jwtService),
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }

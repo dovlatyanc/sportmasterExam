@@ -13,18 +13,18 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     private boolean enabled = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
-    public User() {
-    }
+    public User() {}
 
     public Long getId() {
         return id;
@@ -50,6 +50,10 @@ public class User {
         return enabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -64,5 +68,7 @@ public class User {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+        profile.setUser(this); // двусторонняя связь
     }
 }
+

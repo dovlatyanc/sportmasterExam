@@ -10,16 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class testController {
 
+    @GetMapping("/public")
+    public String publicTest() {
+        return "PUBLIC OK";
+    }
+
     @GetMapping("/user")
-    public String user() {
+    public String userTest() {
         return "USER OK";
     }
 
     @GetMapping("/admin")
-    public String admin() {
+    public String adminTest() {
         return "ADMIN OK";
     }
 }
+
 
 
 
